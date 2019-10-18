@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "779554219200",
+    "firebase_url": "https://digital-aviation.firebaseio.com",
+    "project_id": "digital-aviation",
+    "storage_bucket": "digital-aviation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779554219200:android:1b602750a8a5fd39c63925",
+        "android_client_info": {
+          "package_name": "in.fusionbit.digitalaviation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779554219200-vjj5dseapamkqi0qucv84dvfq47kj1gu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa-AXYuHivNEDgJ1hmwsbFr6K9OPdsP7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779554219200-vjj5dseapamkqi0qucv84dvfq47kj1gu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Digital Aviation</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Quiz</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_slideshow">Logout</string>
+
+    <string name="about">
+On Digital Aviation you will find full syllabus of every subjects for CPL exams. You can practice almost every kind of numerical for Air Navigation exam. You will also get list of frequently asked important questions in DGCA CPL examinations. Get the proper understanding of Aviation Charts, METAR, Weather Charts to get prepare for Aviation Meteorology exam. So don’t waste your precious time in searching of study materials instead just logging to DIGITAL AVIATION or download Mobile App and start preparation for your upcoming CPL exams.
+    </string>
+</resources>

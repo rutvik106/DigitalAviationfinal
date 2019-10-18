@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="in.fusionbit.digitalaviation">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+            android:allowBackup="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
+        <activity android:name=".QuizActivity"></activity>
+        <activity
+                android:name=".SubscriptionActivity"
+                android:label="Subscriptions"
+                android:screenOrientation="portrait" />
+        <activity android:name=".PaymentActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".OTPVerifyActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity
+                android:name=".QuizSelectionActivity"
+                android:label="Quiz"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".QuizSubjectActivity"
+                android:label="Subjects"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".QuizCourseActivity"
+                android:label="Course"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".LessonActivity"
+                android:label="Lesson"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".SubjectActivity"
+                android:label="Subjects"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".SplashActivity"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".MainActivity"
+                android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

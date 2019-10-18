@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/action_about"
+            android:icon="@drawable/ic_about"
+            android:title="Home" />
+    <item
+            android:id="@+id/action_course"
+            android:icon="@drawable/ic_course_bottom"
+            android:title="Course" />
+    <item
+            android:id="@+id/action_quiz"
+            android:icon="@drawable/ic_quiz_bottom"
+            android:title="Quiz" />
+</menu>
