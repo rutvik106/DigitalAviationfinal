@@ -33,6 +33,7 @@ class QuizSelectionActivity : AppCompatActivity(), QuizDataAdapter.QuizDataCallb
 
     private lateinit var progressDialog: ProgressDialog
     private var subjectId = ""
+    private var subjectName = ""
     private lateinit var quizDataList: ArrayList<QuizDataModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,10 @@ class QuizSelectionActivity : AppCompatActivity(), QuizDataAdapter.QuizDataCallb
 
         progressDialog = ProgressDialog(this@QuizSelectionActivity)
 
+        subjectName = intent.getStringExtra("subject_name")
+
         setSupportActionBar(binding.toolbar)
+        binding.toolbar.title = subjectName
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         subjectId = intent.getStringExtra(SUBJECT_ID)
@@ -170,9 +174,10 @@ class QuizSelectionActivity : AppCompatActivity(), QuizDataAdapter.QuizDataCallb
         )
     }
 
-    override fun quizData(id: String) {
+    override fun quizData(id: String,name :String) {
         val intent = Intent(this@QuizSelectionActivity, QuizActivity::class.java)
         intent.putExtra(QUIZ_ID, id)
+        intent.putExtra("title", name)
         startActivity(intent)
     }
 }

@@ -15,12 +15,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 
-class SubjectAdapter(
+class QuizSubjectAdapter(
     context: Context,
     private val subjectList: ArrayList<SubjectModel>,
     private val subjectClick: SubjectClick
 ) :
-    RecyclerView.Adapter<SubjectAdapter.VHSubject>() {
+    RecyclerView.Adapter<QuizSubjectAdapter.VHSubject>() {
 
     private val context: Context = context
     private val onClick: SubjectClick = subjectClick
@@ -28,7 +28,7 @@ class SubjectAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHSubject {
         return VHSubject(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.single_subject_view,
+                R.layout.quiz_single_subject_view,
                 parent,
                 false
             )

@@ -4,18 +4,24 @@ import `in`.fusionbit.digitalaviation.adapters.SubjectAdapter
 import `in`.fusionbit.digitalaviation.databinding.ActivitySubjectBinding
 import `in`.fusionbit.digitalaviation.dialogs.SubjectDetailsDialog
 import `in`.fusionbit.digitalaviation.extras.COURSE_ID
+import `in`.fusionbit.digitalaviation.extras.IS_SUBSCRIBED
 import `in`.fusionbit.digitalaviation.extras.ProgressDialog
 import `in`.fusionbit.digitalaviation.extras.SUBJECT_ID
 import `in`.fusionbit.digitalaviation.model.SubjectModel
 import `in`.fusionbit.digitalaviation.network.API
 import `in`.fusionbit.digitalaviation.network.ApiCallback
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -28,6 +34,7 @@ class SubjectActivity : AppCompatActivity(), SubjectAdapter.SubjectClick {
     private lateinit var activitySubjectBinding: ActivitySubjectBinding
     private lateinit var progressDialog: ProgressDialog
     var courseId = ""
+    var isSubscribed = ""
     private lateinit var subjectList: ArrayList<SubjectModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +48,7 @@ class SubjectActivity : AppCompatActivity(), SubjectAdapter.SubjectClick {
         progressDialog = ProgressDialog(this@SubjectActivity)
 
         courseId = intent.getStringExtra(COURSE_ID)
+        isSubscribed = intent.getStringExtra(IS_SUBSCRIBED)
 
         getsubject(courseId)
     }
@@ -91,7 +99,10 @@ class SubjectActivity : AppCompatActivity(), SubjectAdapter.SubjectClick {
                         activitySubjectBinding.rvSubjects.apply {
                             activitySubjectBinding.rvSubjects.hasFixedSize()
                             activitySubjectBinding.rvSubjects.layoutManager =
-                                LinearLayoutManager(this@SubjectActivity)
+                                GridLayoutManager(this@SubjectActivity, 2)
+                            activitySubjectBinding.rvSubjects.addItemDecoration(
+                                GridSpacingItemDecoration(2, dpToPx(10), true)
+                            )
                             activitySubjectBinding.rvSubjects.adapter =
                                 SubjectAdapter(
                                     this@SubjectActivity,
@@ -119,10 +130,12 @@ class SubjectActivity : AppCompatActivity(), SubjectAdapter.SubjectClick {
         })
     }
 
-    override fun onSubjectClick(courseId: String, subjectId: String) {
+    override fun onSubjectClick(courseId: String, subjectId: String, name: String) {
         val intent = Intent(this@SubjectActivity, LessonActivity::class.java)
         intent.putExtra(COURSE_ID, courseId)
         intent.putExtra(SUBJECT_ID, subjectId)
+        intent.putExtra("subject_name", name)
+        intent.putExtra(IS_SUBSCRIBED, isSubscribed)
         startActivity(intent)
 
 //        val bundle = Bundle()
@@ -144,6 +157,54 @@ class SubjectActivity : AppCompatActivity(), SubjectAdapter.SubjectClick {
         val subjectDialog = SubjectDetailsDialog.display(
             supportFragmentManager!!,
             name, description, image, duration, createdDate
+        )
+    }
+
+
+    inner class GridSpacingItemDecoration(
+        private val spanCount: Int,
+        private val spacing: Int,
+        private val includeEdge: Boolean
+    ) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view) // item position
+            val column = position % spanCount // item column
+
+            if (includeEdge) {
+                outRect.left =
+                    spacing - column * spacing / spanCount // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right =
+                    (column + 1) * spacing / spanCount // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing
+                }
+                outRect.bottom = spacing // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount // column * ((1f / spanCount) * spacing)
+                outRect.right =
+                    spacing - (column + 1) * spacing / spanCount // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing // item top
+                }
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        val r = resources
+        return Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp.toFloat(),
+                r.displayMetrics
+            )
         )
     }
 }

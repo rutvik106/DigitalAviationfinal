@@ -54,83 +54,79 @@ class LessonFragment : Fragment(), LessonAdapter.LessonClick {
 
         progressDialog = ProgressDialog(activity!!)
 
-        CoroutineScope(Dispatchers.Main).launch {
-            callGetLessonList()
-        }
+        callGetLessonList()
 
         return fragmentLessonBinding.root
     }
 
-    private suspend fun callGetLessonList() {
+    private fun callGetLessonList() {
         progressDialog.show()
-        withContext(Dispatchers.Main) {
-            API().getLesson(courseId, subjectId, object : ApiCallback<ResponseBody>() {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    super.onFailure(call, t)
+        API().getLesson(courseId, subjectId, object : ApiCallback<ResponseBody>() {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                super.onFailure(call, t)
+                progressDialog.cancel()
+                Toast.makeText(activity, "Something wrong!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                super.onResponse(call, response)
+                try {
+                    val responseString = response.body()?.string()
+                    Log.e(TAG, responseString)
+                    val jsonObject = JSONObject(responseString)
+                    val responseObject = jsonObject.getJSONObject("response")
+                    val errorObject = responseObject.getJSONObject("error")
+                    if (errorObject.getString("error_code") == "0") {
+                        lessonList = ArrayList()
+                        val dataObject = responseObject.getJSONObject("data")
+                        val subjectArray = dataObject.getJSONArray("lessons")
+                        for (i in 0 until subjectArray.length()) {
+                            val obj = subjectArray.getJSONObject(i)
+                            val subjectModel = LessonModel(
+                                obj.getString("id"),
+                                obj.getString("name"),
+                                obj.getString("description"),
+                                obj.getString("course_id"),
+                                obj.getString("subject_id"),
+                                obj.getString("short_description"),
+                                obj.getString("link"),
+                                obj.getString("image"),
+                                obj.getString("duration"),
+                                obj.getString("ext_1"),
+                                obj.getString("ext_2"),
+                                obj.getString("created_at"),
+                                obj.getString("updated_at")
+                            )
+                            lessonList.add(subjectModel)
+                        }
+
+                        fragmentLessonBinding.rvLesson.apply {
+                            fragmentLessonBinding.rvLesson.hasFixedSize()
+                            fragmentLessonBinding.rvLesson.layoutManager =
+                                LinearLayoutManager(activity!!)
+                            fragmentLessonBinding.rvLesson.adapter =
+                                LessonAdapter(lessonList, this@LessonFragment)
+                        }
+                        progressDialog.cancel()
+
+                    } else {
+                        progressDialog.cancel()
+                        Toast.makeText(
+                            activity,
+                            errorObject.getString("error_msg"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } catch (ex: Exception) {
                     progressDialog.cancel()
+                    ex.printStackTrace()
                     Toast.makeText(activity, "Something wrong!", Toast.LENGTH_SHORT).show()
                 }
-
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    super.onResponse(call, response)
-                    try {
-                        val responseString = response.body()?.string()
-                        Log.e(TAG, responseString)
-                        val jsonObject = JSONObject(responseString)
-                        val responseObject = jsonObject.getJSONObject("response")
-                        val errorObject = responseObject.getJSONObject("error")
-                        if (errorObject.getString("error_code") == "0") {
-                            lessonList = ArrayList()
-                            val dataObject = responseObject.getJSONObject("data")
-                            val subjectArray = dataObject.getJSONArray("lessons")
-                            for (i in 0 until subjectArray.length()) {
-                                val obj = subjectArray.getJSONObject(i)
-                                val subjectModel = LessonModel(
-                                    obj.getString("id"),
-                                    obj.getString("name"),
-                                    obj.getString("description"),
-                                    obj.getString("course_id"),
-                                    obj.getString("subject_id"),
-                                    obj.getString("short_description"),
-                                    obj.getString("link"),
-                                    obj.getString("image"),
-                                    obj.getString("duration"),
-                                    obj.getString("ext_1"),
-                                    obj.getString("ext_2"),
-                                    obj.getString("created_at"),
-                                    obj.getString("updated_at")
-                                )
-                                lessonList.add(subjectModel)
-                            }
-
-                            fragmentLessonBinding.rvLesson.apply {
-                                fragmentLessonBinding.rvLesson.hasFixedSize()
-                                fragmentLessonBinding.rvLesson.layoutManager =
-                                    LinearLayoutManager(activity!!)
-                                fragmentLessonBinding.rvLesson.adapter =
-                                    LessonAdapter(lessonList, this@LessonFragment)
-                            }
-                            progressDialog.cancel()
-
-                        } else {
-                            progressDialog.cancel()
-                            Toast.makeText(
-                                activity,
-                                errorObject.getString("error_msg"),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } catch (ex: Exception) {
-                        progressDialog.cancel()
-                        ex.printStackTrace()
-                        Toast.makeText(activity, "Something wrong!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-        }
+            }
+        })
     }
 
     override fun onLessonClick(

@@ -12,7 +12,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".QuizActivity"></activity>
+        <activity android:name=".ContentActivity"></activity>
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".QuizActivity" />
         <activity
                 android:name=".SubscriptionActivity"
                 android:label="Subscriptions"
@@ -31,11 +33,10 @@
                 android:screenOrientation="portrait" />
         <activity
                 android:name=".QuizCourseActivity"
-                android:label="Course"
+                android:label="Quiz"
                 android:screenOrientation="portrait" />
         <activity
                 android:name=".LessonActivity"
-                android:label="Lesson"
                 android:screenOrientation="portrait" />
         <activity
                 android:name=".SubjectActivity"

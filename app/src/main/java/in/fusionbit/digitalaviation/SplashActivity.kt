@@ -1,5 +1,7 @@
 package `in`.fusionbit.digitalaviation
 
+import `in`.fusionbit.digitalaviation.extras.TOKEN
+import `in`.fusionbit.digitalaviation.extras.getPref
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -18,9 +20,22 @@ class SplashActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_splash)
 
-        val handler = Handler().postDelayed(Runnable {
-            finish()
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        }, 3000)
+        val token = getPref(this@SplashActivity, TOKEN)
+
+        if (token == "" || token == null) {
+            val handler = Handler().postDelayed(Runnable {
+                finish()
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            }, 3000)
+        } else {
+            val handler = Handler().postDelayed(Runnable {
+                finish()
+                startActivity(Intent(this@SplashActivity, DashboardActivity::class.java))
+            }, 3000)
+        }
+
+
     }
+
+
 }

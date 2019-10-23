@@ -35,7 +35,8 @@ class QuizDataAdapter internal constructor(
         holder.tvTitle.text = list[position].title
         holder.card.setOnClickListener {
             onClick.quizData(
-                list[position].id
+                list[position].id,
+                list[position].title
             )
         }
     }
@@ -46,6 +47,6 @@ class QuizDataAdapter internal constructor(
     }
 
     interface QuizDataCallback {
-        fun quizData(id: String)
+        fun quizData(id: String, title: String)
     }
 }
