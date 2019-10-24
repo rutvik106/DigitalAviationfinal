@@ -2,15 +2,11 @@ package `in`.fusionbit.digitalaviation
 
 import `in`.fusionbit.digitalaviation.databinding.ActivityContentBinding
 import `in`.fusionbit.digitalaviation.extras.ProgressDialog
-import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import androidx.databinding.DataBindingUtil
-import im.delight.android.webview.AdvancedWebView
-import android.app.Activity
 import android.content.DialogInterface
-
 
 class ContentActivity : AppCompatActivity() {
 
@@ -19,6 +15,8 @@ class ContentActivity : AppCompatActivity() {
     private var name = ""
     private var url = ""
     private var id = ""
+
+    var newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0"
 
     private lateinit var progressDialog: ProgressDialog
 
@@ -50,10 +48,13 @@ class ContentActivity : AppCompatActivity() {
 
         progressDialog.show()
 
-        val handler = Handler().postDelayed(Runnable {
-            progressDialog.dismiss()
-        }, 5000)
+        Handler().postDelayed(Runnable {
+            try {
+                progressDialog.dismiss()
+            } catch (ex: IllegalArgumentException) {
 
+            }
+        }, 5000)
 
 
 

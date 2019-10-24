@@ -23,19 +23,19 @@ class ProgressDialog(context: Context) : Dialog(context) {
         setCanceledOnTouchOutside(false)
 
         Handler().postDelayed(Runnable {
-            msg.setText("LOADING");
+            msg.setText("LOADING...");
         }, 1000)
 
        Handler().postDelayed(Runnable {
-            msg.setText("FETCHING DATA");
+            msg.setText("FETCHING DATA...");
         }, 2000)
 
         Handler().postDelayed(Runnable {
-            msg.setText("JUST A MOMENT");
+            msg.setText("JUST A MOMENT...");
         }, 3000)
 
         Handler().postDelayed(Runnable {
-            msg.setText("ALMOST THERE");
+            msg.setText("ALMOST THERE...");
         }, 4000)
 
     }

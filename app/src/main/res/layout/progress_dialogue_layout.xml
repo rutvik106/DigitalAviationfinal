@@ -12,7 +12,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Please wait ..."
+            android:text="PLEASE WAIT..."
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
             android:textStyle="bold" />

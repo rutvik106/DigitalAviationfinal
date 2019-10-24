@@ -46,21 +46,13 @@
                         android:textOn="Mobile Mode"
                         android:textSize="12dp" />
 
-
-                <WebView
-                        android:id="@+id/tv_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="8dp"
-                        android:clickable="false"
-                        android:nestedScrollingEnabled="true"
-                        android:visibility="gone" />
-
                 <im.delight.android.webview.AdvancedWebView
                         android:id="@+id/web"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:longClickable="false" />
+
+
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
