@@ -5,11 +5,13 @@ import `in`.fusionbit.digitalaviation.extras.USER_NAME
 import `in`.fusionbit.digitalaviation.extras.getPref
 import `in`.fusionbit.digitalaviation.fragments.HomeFragment
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
@@ -67,9 +69,33 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
 
             R.id.nav_logout -> {
-                this@DashboardActivity.getSharedPreferences(PREF, 0).edit().clear().apply()
-                finish()
-                startActivity(Intent(this@DashboardActivity, SplashActivity::class.java))
+
+                val builder = AlertDialog.Builder(this@DashboardActivity)
+
+                builder.setTitle("Logout")
+
+                builder.setMessage("Are you sure you want to logout?")
+
+                builder.setPositiveButton("Yes"){dialog, which ->
+                    this@DashboardActivity.getSharedPreferences(PREF, 0).edit().clear().apply()
+                    finish()
+                    startActivity(Intent(this@DashboardActivity, SplashActivity::class.java))
+                }
+
+
+                // Display a negative button on alert dialog
+                builder.setNegativeButton("No"){dialog,which ->
+
+                }
+
+
+                // Finally, make the alert dialog using builder
+                val dialog: AlertDialog = builder.create()
+
+                // Display the alert dialog on app interface
+                dialog.show()
+
+
             }
 
             R.id.nav_sub -> {
