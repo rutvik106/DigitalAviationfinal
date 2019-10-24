@@ -9,6 +9,7 @@ import android.os.Handler
 import androidx.databinding.DataBindingUtil
 import im.delight.android.webview.AdvancedWebView
 import android.app.Activity
+import android.content.DialogInterface
 
 
 class ContentActivity : AppCompatActivity() {
@@ -39,16 +40,18 @@ class ContentActivity : AppCompatActivity() {
         supportActionBar?.title = name
 
         activityContentBinding.toolbar.setNavigationOnClickListener {
-            if (!isFinishing) {
-                finish()
-            }
+            finish()
         }
         progressDialog = ProgressDialog(this@ContentActivity)
+
+        progressDialog.setOnCancelListener(DialogInterface.OnCancelListener {
+            this@ContentActivity.finish()
+        })
 
         progressDialog.show()
 
         val handler = Handler().postDelayed(Runnable {
-            progressDialog.cancel()
+            progressDialog.dismiss()
         }, 5000)
 
 
@@ -63,7 +66,8 @@ class ContentActivity : AppCompatActivity() {
 //                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
             } else {
                 activityContentBinding.web.setDesktopMode(false)
-                activityContentBinding.web.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.132 Safari/537.36")
+                activityContentBinding.web.getSettings()
+                    .setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.132 Safari/537.36")
 //                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 //                mbOrientationLandscape = true
             }
@@ -99,16 +103,6 @@ class ContentActivity : AppCompatActivity() {
 //        activityContentBinding.tvContent.loadUrl(urlData)
         activityContentBinding.web.loadUrl("http://digitalaviation.in/master-mobile.php?cid=" + id)
 //        activityContentBinding.web.loadUrl("https://www.facebook.com/")
-
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (!isFinishing) {
-            finish()
-        } else {
-
-        }
 
     }
 

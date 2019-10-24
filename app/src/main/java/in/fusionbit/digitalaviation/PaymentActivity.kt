@@ -2,6 +2,7 @@ package `in`.fusionbit.digitalaviation
 
 import `in`.fusionbit.digitalaviation.databinding.ActivityPaymentBinding
 import `in`.fusionbit.digitalaviation.extras.*
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -46,11 +47,16 @@ class PaymentActivity : AppCompatActivity() {
         activityPaymentBinding.webPayment.settings.javaScriptEnabled = true
         activityPaymentBinding.webPayment.loadUrl(mainLink)
 
+        progressDialog.setOnCancelListener(DialogInterface.OnCancelListener {
+            this@PaymentActivity.finish()
+        })
+
+        progressDialog.show()
+
         activityPaymentBinding.webPayment.webViewClient = object : WebViewClient() {
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-                progressDialog.show()
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -58,14 +64,14 @@ class PaymentActivity : AppCompatActivity() {
                 if (url == "https://www.digitalaviation.in/dashboard.php#") {
                     Toast.makeText(this@PaymentActivity, "Already subscribed", Toast.LENGTH_SHORT)
                         .show()
-                    progressDialog.cancel()
+                    progressDialog.dismiss()
                     finish()
                 } else if (url == "https://www.digitalaviation.in/course.php#") {
-                    progressDialog.cancel()
+                    progressDialog.dismiss()
                     Toast.makeText(this@PaymentActivity, "Already subscribed", Toast.LENGTH_SHORT)
                         .show()
                 } else if (url == "https://www.digitalaviation.in/status.php") {
-                    progressDialog.cancel()
+                    progressDialog.dismiss()
                     finish()
                     Toast.makeText(this@PaymentActivity, "Payment Completed", Toast.LENGTH_SHORT)
                         .show()
@@ -76,9 +82,10 @@ class PaymentActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                progressDialog.cancel()
+                progressDialog.dismiss()
             }
         }
 
     }
+
 }
