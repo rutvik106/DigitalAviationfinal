@@ -59,6 +59,16 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="16dp" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_key_feature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14dp" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

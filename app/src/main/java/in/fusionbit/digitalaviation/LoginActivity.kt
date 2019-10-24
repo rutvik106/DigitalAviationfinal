@@ -17,6 +17,7 @@ import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.net.HttpURLConnection
 
 class LoginActivity : AppCompatActivity() {
 
@@ -62,27 +63,51 @@ class LoginActivity : AppCompatActivity() {
                 ) {
                     super.onResponse(call, response)
                     try {
-                        val responseString = response.body()?.string()
-                        Log.e(TAG, responseString)
-                        val jsonObject = JSONObject(responseString)
-                        val responseObject = jsonObject.getJSONObject("response")
-                        val errorObject = responseObject.getJSONObject("error")
-                        if (errorObject.getString("error_code") == "0") {
-                            progressDialog.cancel()
-                            Toast.makeText(
-                                this@LoginActivity, errorObject.getString("msg"),
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            finish()
-                            val intent =
-                                Intent(this@LoginActivity, OTPVerifyActivity::class.java)
-                            intent.putExtra(
-                                MOBILE_NO,
-                                activityLoginBinding.etMobile.text.toString().trim()
-                            )
-                            startActivity(intent)
+
+                        if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                            val error = response.errorBody()?.string()
+                            Log.e("ERROR -> ", error)
+                            val jsonObject = JSONObject(error)
+                            val responseObject = jsonObject.getJSONObject("response")
+                            val errorObject = responseObject.getJSONObject("error")
+                            if (errorObject.getString("error_code") == "1") {
+                                progressDialog.cancel()
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    errorObject.getString("error_msg"),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+                            val responseString = response.body()?.string()
+                            val jsonObject = JSONObject(responseString)
+                            val responseObject = jsonObject.getJSONObject("response")
+                            val errorObject = responseObject.getJSONObject("error")
+                            if (errorObject.getString("error_code") == "0") {
+                                progressDialog.cancel()
+                                Toast.makeText(
+                                    this@LoginActivity, errorObject.getString("msg"),
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                finish()
+                                val intent =
+                                    Intent(this@LoginActivity, OTPVerifyActivity::class.java)
+                                intent.putExtra(
+                                    MOBILE_NO,
+                                    activityLoginBinding.etMobile.text.toString().trim()
+                                )
+                                startActivity(intent)
+                            } else if (errorObject.getString("error_code") == "1") {
+                                progressDialog.cancel()
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    errorObject.getString("error_msg"),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
+
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         progressDialog.cancel()

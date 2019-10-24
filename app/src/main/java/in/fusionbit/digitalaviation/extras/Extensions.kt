@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken
 
 
 const val BASE_URL = "http://api.digitalaviation.in/digital-aviation/index.php/"
-const val PAYMENT_LINK = "http://digitalaviation.in/subscriptions.php?id="
+const val PAYMENT_LINK = "https://www.digitalaviation.in/app_subscriptions.php?"
 
 const val COURSE_ID = "course_id"
 const val SUBJECT_ID = "subject_id"
@@ -18,7 +18,9 @@ const val TOKEN = "token"
 const val USER_ID = "user_id"
 const val USER_EMAIL = "user_email"
 const val USER_NAME = "user_name"
+const val USER_MOBILE = "mobile"
 const val SUBSCRIPTION = "subscription_date"
+const val IS_SUBSCRIBED = "is_subscribed"
 
 fun savePref(context: Context, key: String, value: String) {
     val sharedPref = context.getSharedPreferences(

@@ -19,6 +19,7 @@ class CourseDetailsDialog : DialogFragment() {
     private lateinit var tvDescription: AppCompatTextView
     private lateinit var tvDuration: AppCompatTextView
     private lateinit var tvPrice: AppCompatTextView
+    private lateinit var tvKeyFeature: AppCompatTextView
     private lateinit var tvCreatedDate: AppCompatTextView
     private lateinit var ivImage: AppCompatImageView
 
@@ -41,6 +42,7 @@ class CourseDetailsDialog : DialogFragment() {
         tvPrice = view.findViewById(R.id.tv_price)
         tvCreatedDate = view.findViewById(R.id.tv_date)
         ivImage = view.findViewById(R.id.iv_image)
+        tvKeyFeature = view.findViewById(R.id.tv_key_feature)
 
         tvName.text = courseName
         tvDescription.text = courseDescription

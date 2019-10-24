@@ -78,10 +78,10 @@ class OTPVerifyActivity : AppCompatActivity() {
 
                             val dataObject = responseObject.getJSONObject("data")
                             val token = dataObject.getString("token")
-                            savePref(this@OTPVerifyActivity, TOKEN, token)
+
 
                             progressDialog.show()
-                            login()
+                            login(token)
                         }
                     } catch (ex: Exception) {
                         progressDialog.cancel()
@@ -97,13 +97,10 @@ class OTPVerifyActivity : AppCompatActivity() {
             })
     }
 
-    private fun login() {
+    private fun login(token: String) {
         progressDialog.show()
         API().login(
-            mobileNo, getPref(
-                this@OTPVerifyActivity,
-                TOKEN
-            ), object : ApiCallback<ResponseBody>() {
+            mobileNo, token, object : ApiCallback<ResponseBody>() {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     super.onFailure(call, t)
                     progressDialog.cancel()
@@ -138,33 +135,25 @@ class OTPVerifyActivity : AppCompatActivity() {
                             )
                             savePref(
                                 this@OTPVerifyActivity,
+                                USER_MOBILE,
+                                userObject.getString("phone")
+                            )
+                            savePref(
+                                this@OTPVerifyActivity,
                                 USER_EMAIL,
                                 userObject.getString("email")
                             )
 
-                            val subscriptionsArray = dataObject.getJSONArray("subscriptions")
-
-                            for (i in 0 until subscriptionsArray.length()) {
-                                val obj = subscriptionsArray.getJSONObject(i)
-                                val model = SubscriptionsModel(
-                                    obj.getString("id"),
-                                    obj.getString("order_no"),
-                                    obj.getString("subscription_date"),
-                                    obj.getString("expiration_date"),
-                                    obj.getString("name"),
-                                    obj.getString("pricing"),
-                                    obj.getString("expired")
-                                )
-                                subscriptionList.add(model)
-                            }
-
-                            val gson = Gson()
-                            val data = gson.toJson(subscriptionList)
-                            savePref(this@OTPVerifyActivity, SUBSCRIPTION, data)
+                            savePref(this@OTPVerifyActivity, TOKEN, token)
 
                             progressDialog.cancel()
                             finish()
-                            startActivity(Intent(this@OTPVerifyActivity, MainActivity::class.java))
+                            startActivity(
+                                Intent(
+                                    this@OTPVerifyActivity,
+                                    DashboardActivity::class.java
+                                )
+                            )
 
                         } else {
                             progressDialog.cancel()

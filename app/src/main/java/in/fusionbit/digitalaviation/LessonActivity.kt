@@ -8,6 +8,7 @@ import `in`.fusionbit.digitalaviation.extras.*
 import `in`.fusionbit.digitalaviation.model.LessonModel
 import `in`.fusionbit.digitalaviation.network.API
 import `in`.fusionbit.digitalaviation.network.ApiCallback
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -26,6 +27,8 @@ class LessonActivity : AppCompatActivity(), LessonAdapter.LessonClick {
     private lateinit var progressDialog: ProgressDialog
     private var courseId: String = ""
     private var subjectId: String = ""
+    private var subjectName = ""
+    private var isSubscribed = ""
     private lateinit var lessonList: ArrayList<LessonModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +36,14 @@ class LessonActivity : AppCompatActivity(), LessonAdapter.LessonClick {
         activityLessionBinding =
             DataBindingUtil.setContentView(this@LessonActivity, R.layout.activity_lession)
 
+        subjectName = intent.getStringExtra("subject_name")!!
+
         setSupportActionBar(activityLessionBinding.toolbar)
+        supportActionBar?.title = subjectName
 
         courseId = intent.getStringExtra(COURSE_ID)!!
         subjectId = intent.getStringExtra(SUBJECT_ID)!!
+        isSubscribed = intent.getStringExtra(IS_SUBSCRIBED)!!
 
         progressDialog = ProgressDialog(this@LessonActivity)
         activityLessionBinding.toolbar.setNavigationOnClickListener { finish() }
@@ -121,13 +128,18 @@ class LessonActivity : AppCompatActivity(), LessonAdapter.LessonClick {
         url: String,
         id: String
     ) {
-        if (getPref(this@LessonActivity, TOKEN) == "") {
-            Toast.makeText(this@LessonActivity, "Please Login", Toast.LENGTH_SHORT).show()
+        if (isSubscribed == "0") {
+            Toast.makeText(this@LessonActivity, "Please subscribe course.", Toast.LENGTH_SHORT)
+                .show()
+            val intent = Intent(this@LessonActivity, PaymentActivity::class.java)
+            intent.putExtra(COURSE_ID, courseId)
+            startActivity(intent)
         } else {
-            val dialog = ContentDetailsDialog.display(
-                supportFragmentManager,
-                name, url, id
-            )
+            val intent = Intent(this@LessonActivity, ContentActivity::class.java)
+            intent.putExtra("name", name)
+            intent.putExtra("url", url)
+            intent.putExtra("id", id)
+            startActivity(intent)
         }
     }
 

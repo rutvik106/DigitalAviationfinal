@@ -2,6 +2,7 @@ package `in`.fusionbit.digitalaviation.dialogs
 
 import `in`.fusionbit.digitalaviation.R
 import `in`.fusionbit.digitalaviation.extras.ProgressDialog
+import `in`.fusionbit.digitalaviation.model.RoatationModel
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,8 @@ import com.google.android.material.appbar.MaterialToolbar
 import android.content.pm.ActivityInfo
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 
@@ -28,7 +31,9 @@ class ContentDetailsDialog : DialogFragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var btn: SwitchMaterial
 
-    var mbOrientationLandscape = true
+    private lateinit var roatationModel: RoatationModel
+
+    var mbOrientationLandscape = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +53,15 @@ class ContentDetailsDialog : DialogFragment() {
         tvContent = view.findViewById(R.id.tv_content)
         btn = view.findViewById(R.id.btn_orientation)
 
+        roatationModel = ViewModelProviders.of(this)[RoatationModel::class.java]
+
         btn.setOnCheckedChangeListener { compoundButton, b ->
-            if (b && mbOrientationLandscape) {
+            if (roatationModel.rotation) {
+                roatationModel.rotation = false
                 (activity as AppCompatActivity).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                mbOrientationLandscape = false
             } else {
                 (activity as AppCompatActivity).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-                mbOrientationLandscape = true
+                roatationModel.rotation = true
             }
         }
 

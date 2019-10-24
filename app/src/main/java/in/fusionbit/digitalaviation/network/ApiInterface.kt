@@ -38,7 +38,9 @@ interface ApiInterface {
     @GET("App/verifyOtp/{mobile}/{otp}")
     fun verifyOtp(@Path("mobile") mobileNo: String, @Path("otp") otp: String): Call<ResponseBody>
 
-    @FormUrlEncoded
-    @POST("App/login")
-    fun login(@Field("phone_number") number: String, @Field("token") token: String): Call<ResponseBody>
+    @GET("App/login/{number}/{token}")
+    fun login(@Path("number") number: String, @Path("token") token: String): Call<ResponseBody>
+
+    @GET("course/get/{contactNumber}")
+    fun getCourseListAfterLogin(@Path("contactNumber") number: String): Call<ResponseBody>
 }

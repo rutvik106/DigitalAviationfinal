@@ -107,7 +107,11 @@ class QuizSubjectFragment : Fragment(), SubjectAdapter.SubjectClick {
                                 fragmentSubjectBinding.rvSubject.layoutManager =
                                     LinearLayoutManager(activity!!)
                                 fragmentSubjectBinding.rvSubject.adapter =
-                                    SubjectAdapter(activity!!,subjectList, this@QuizSubjectFragment)
+                                    SubjectAdapter(
+                                        activity!!,
+                                        subjectList,
+                                        this@QuizSubjectFragment
+                                    )
                             }
                             progressDialog.cancel()
 
@@ -129,7 +133,7 @@ class QuizSubjectFragment : Fragment(), SubjectAdapter.SubjectClick {
         }
     }
 
-    override fun onSubjectClick(courseId: String, subjectId: String) {
+    override fun onSubjectClick(courseId: String, subjectId: String, name: String) {
         val bundle = Bundle()
         bundle.putString(SUBJECT_ID, subjectId)
         val fragment = FragmentQuizData()

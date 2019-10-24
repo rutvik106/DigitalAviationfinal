@@ -35,7 +35,7 @@ class QuizAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: VHQuiz, position: Int) {
-        holder.tvQuestion.text = "Que. ${position + 1}  " + quizList[position].questionTitle
+        holder.tvQuestion.text = "Question. ${position + 1}  " + quizList[position].questionTitle
 
         val list: List<QuizOptions> =
             quizList[position].optionList.filter { quizOptions -> quizOptions.questionId == quizList[position].id }

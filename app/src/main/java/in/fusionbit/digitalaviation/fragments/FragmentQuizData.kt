@@ -173,7 +173,7 @@ class FragmentQuizData : Fragment(), QuizDataAdapter.QuizDataCallback {
         )
     }
 
-    override fun quizData(id: String) {
+    override fun quizData(id: String, title: String) {
         val bundle = Bundle()
         bundle.putString(QUIZ_ID, id)
         val fragment = QuizFragment()

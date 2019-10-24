@@ -52,4 +52,9 @@ class API {
         val dataCallback = ApiClient().requestService().login(number, token)
         dataCallback.enqueue(callback)
     }
+
+    fun getCourseAfterLogin(number: String, callback: ApiCallback<ResponseBody>) {
+        val courseCallback = ApiClient().requestService().getCourseListAfterLogin(number)
+        courseCallback.enqueue(callback)
+    }
 }

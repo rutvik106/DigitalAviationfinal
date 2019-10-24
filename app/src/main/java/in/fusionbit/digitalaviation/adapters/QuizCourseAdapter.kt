@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 
-class CourseAdapter(
+class QuizCourseAdapter(
     context: Context,
     private val courseList: ArrayList<CourseModel>,
     private val courseClick: CourseClick
 ) :
-    RecyclerView.Adapter<CourseAdapter.VHCourse>() {
+    RecyclerView.Adapter<QuizCourseAdapter.VHCourse>() {
 
     private val onClick: CourseClick = courseClick
     private val context: Context = context
@@ -28,7 +28,7 @@ class CourseAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHCourse {
         return VHCourse(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.course_single_view,
+                R.layout.quiz_course_single_view,
                 parent,
                 false
             )
