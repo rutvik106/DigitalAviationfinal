@@ -62,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
                     response: Response<ResponseBody>
                 ) {
                     super.onResponse(call, response)
+
                     try {
 
                         if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
@@ -71,20 +72,19 @@ class LoginActivity : AppCompatActivity() {
                             val responseObject = jsonObject.getJSONObject("response")
                             val errorObject = responseObject.getJSONObject("error")
                             if (errorObject.getString("error_code") == "1") {
-                                progressDialog.cancel()
                                 Toast.makeText(
                                     this@LoginActivity,
                                     errorObject.getString("error_msg"),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+
                         } else {
                             val responseString = response.body()?.string()
                             val jsonObject = JSONObject(responseString)
                             val responseObject = jsonObject.getJSONObject("response")
                             val errorObject = responseObject.getJSONObject("error")
                             if (errorObject.getString("error_code") == "0") {
-                                progressDialog.cancel()
                                 Toast.makeText(
                                     this@LoginActivity, errorObject.getString("msg"),
                                     Toast.LENGTH_SHORT
@@ -99,7 +99,6 @@ class LoginActivity : AppCompatActivity() {
                                 )
                                 startActivity(intent)
                             } else if (errorObject.getString("error_code") == "1") {
-                                progressDialog.cancel()
                                 Toast.makeText(
                                     this@LoginActivity,
                                     errorObject.getString("error_msg"),
@@ -110,7 +109,6 @@ class LoginActivity : AppCompatActivity() {
 
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        progressDialog.cancel()
                         Toast.makeText(
                             this@LoginActivity,
                             "Something wrong!",
@@ -118,6 +116,7 @@ class LoginActivity : AppCompatActivity() {
                         )
                             .show()
                     }
+                    progressDialog.cancel()
                 }
             })
     }

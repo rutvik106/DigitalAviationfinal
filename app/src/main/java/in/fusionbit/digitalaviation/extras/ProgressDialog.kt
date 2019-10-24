@@ -20,6 +20,8 @@ class ProgressDialog(context: Context) : Dialog(context) {
         }
         //setCancelable(false)
 
+        setCanceledOnTouchOutside(false)
+
         Handler().postDelayed(Runnable {
             msg.setText("LOADING");
         }, 1000)

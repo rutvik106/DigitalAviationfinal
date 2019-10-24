@@ -16,6 +16,7 @@ import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.net.HttpURLConnection
 
 class OTPVerifyActivity : AppCompatActivity() {
 
@@ -53,8 +54,20 @@ class OTPVerifyActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     super.onFailure(call, t)
                     progressDialog.cancel()
-                    Toast.makeText(this@OTPVerifyActivity, "Something wrong!", Toast.LENGTH_SHORT)
-                        .show()
+
+                    val responseString = call.request().body.toString();
+                    Log.e(TAG, responseString)
+                    val jsonObject = JSONObject(responseString)
+                    val responseObject = jsonObject.getJSONObject("response")
+                    val errorObject = responseObject.getJSONObject("error")
+                    if (errorObject.getString("error_code") == "1") {
+                        Toast.makeText(
+                            this@OTPVerifyActivity,
+                            errorObject.getString("error_msg"),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 }
 
                 override fun onResponse(
@@ -62,36 +75,42 @@ class OTPVerifyActivity : AppCompatActivity() {
                     response: Response<ResponseBody>
                 ) {
                     super.onResponse(call, response)
-                    try {
-                        val responseString = response.body()?.string()
-                        Log.e(TAG, responseString)
-                        val jsonObject = JSONObject(responseString)
+
+                    if (response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                        val error = response.errorBody()?.string()
+                        val jsonObject = JSONObject(error)
                         val responseObject = jsonObject.getJSONObject("response")
                         val errorObject = responseObject.getJSONObject("error")
-                        if (errorObject.getString("error_code") == "0") {
-                            progressDialog.cancel()
+                        if (errorObject.getString("error_code") == "1") {
                             Toast.makeText(
-                                this@OTPVerifyActivity, errorObject.getString("msg"),
+                                this@OTPVerifyActivity,
+                                errorObject.getString("error_msg"),
                                 Toast.LENGTH_SHORT
-                            )
-                                .show()
-
-                            val dataObject = responseObject.getJSONObject("data")
-                            val token = dataObject.getString("token")
-
-
-                            progressDialog.show()
-                            login(token)
+                            ).show()
                         }
-                    } catch (ex: Exception) {
                         progressDialog.cancel()
-                        ex.printStackTrace()
+                        return;
+                    }
+
+                    val responseString = response.body()?.string()
+                    Log.e(TAG, responseString)
+                    val jsonObject = JSONObject(responseString)
+                    val responseObject = jsonObject.getJSONObject("response")
+                    val errorObject = responseObject.getJSONObject("error")
+                    if (errorObject.getString("error_code") == "0") {
+                        progressDialog.cancel()
                         Toast.makeText(
-                            this@OTPVerifyActivity,
-                            "Something wrong!",
+                            this@OTPVerifyActivity, errorObject.getString("msg"),
                             Toast.LENGTH_SHORT
                         )
                             .show()
+
+                        val dataObject = responseObject.getJSONObject("data")
+                        val token = dataObject.getString("token")
+
+
+                        progressDialog.show()
+                        login(token)
                     }
                 }
             })
@@ -104,7 +123,7 @@ class OTPVerifyActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     super.onFailure(call, t)
                     progressDialog.cancel()
-                    Toast.makeText(this@OTPVerifyActivity, "Something wrong!", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@OTPVerifyActivity, "OTP ERROR", Toast.LENGTH_SHORT)
                         .show()
                 }
 
@@ -113,63 +132,51 @@ class OTPVerifyActivity : AppCompatActivity() {
                     response: Response<ResponseBody>
                 ) {
                     super.onResponse(call, response)
-                    try {
 
-                        val responseString = response.body()?.string()
-                        Log.e(TAG, responseString)
+                    val responseString = response.body()?.string()
+                    Log.e(TAG, responseString)
 
-                        val jsonObject = JSONObject(responseString)
-                        val responseObject = jsonObject.getJSONObject("response")
-                        val errorObject = responseObject.getJSONObject("error")
+                    val jsonObject = JSONObject(responseString)
+                    val responseObject = jsonObject.getJSONObject("response")
+                    val errorObject = responseObject.getJSONObject("error")
 
-                        subscriptionList = ArrayList()
+                    subscriptionList = ArrayList()
 
-                        if (errorObject.getString("error_code") == "0") {
-                            val dataObject = responseObject.getJSONObject("data")
-                            val userObject = dataObject.getJSONObject("user")
-                            savePref(this@OTPVerifyActivity, USER_ID, userObject.getString("id"))
-                            savePref(
-                                this@OTPVerifyActivity,
-                                USER_NAME,
-                                userObject.getString("name")
-                            )
-                            savePref(
-                                this@OTPVerifyActivity,
-                                USER_MOBILE,
-                                userObject.getString("phone")
-                            )
-                            savePref(
-                                this@OTPVerifyActivity,
-                                USER_EMAIL,
-                                userObject.getString("email")
-                            )
-
-                            savePref(this@OTPVerifyActivity, TOKEN, token)
-
-                            progressDialog.cancel()
-                            finish()
-                            startActivity(
-                                Intent(
-                                    this@OTPVerifyActivity,
-                                    DashboardActivity::class.java
-                                )
-                            )
-
-                        } else {
-                            progressDialog.cancel()
-                        }
-
-
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        progressDialog.cancel()
-                        Toast.makeText(
+                    if (errorObject.getString("error_code") == "0") {
+                        val dataObject = responseObject.getJSONObject("data")
+                        val userObject = dataObject.getJSONObject("user")
+                        savePref(this@OTPVerifyActivity, USER_ID, userObject.getString("id"))
+                        savePref(
                             this@OTPVerifyActivity,
-                            "Something wrong!",
-                            Toast.LENGTH_SHORT
+                            USER_NAME,
+                            userObject.getString("name")
                         )
-                            .show()
+                        savePref(
+                            this@OTPVerifyActivity,
+                            USER_MOBILE,
+                            userObject.getString("phone")
+                        )
+                        savePref(
+                            this@OTPVerifyActivity,
+                            USER_EMAIL,
+                            userObject.getString("email")
+                        )
+
+                        savePref(this@OTPVerifyActivity, TOKEN, token)
+
+                        finish()
+                        startActivity(
+                            Intent(
+                                this@OTPVerifyActivity,
+                                DashboardActivity::class.java
+                            )
+                        )
+
                     }
+
+                    progressDialog.cancel()
+
+
                 }
             })
     }
