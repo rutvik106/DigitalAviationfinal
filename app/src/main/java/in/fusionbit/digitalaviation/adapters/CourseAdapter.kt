@@ -9,6 +9,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
@@ -52,18 +53,27 @@ class CourseAdapter(
         }
 
         holder.card.setOnClickListener {
-            onClick.onCourseClick(courseList[position].id, courseList[position].isSubscribed)
+            if (courseList[position].expired == "0") {
+                onClick.onCourseClick(courseList[position].id, courseList[position].isSubscribed)
+            } else {
+                Toast.makeText(context, "Subscription Expired", Toast.LENGTH_SHORT).show();
+            }
         }
 
         holder.ivInfo.setOnClickListener {
-            onClick.onSingleItemData(
-                courseList[position].name,
-                courseList[position].description,
-                courseList[position].image,
-                courseList[position].price,
-                courseList[position].duration,
-                courseList[position].createdDate
-            )
+            if (courseList[position].expired == "0") {
+                onClick.onSingleItemData(
+                    courseList[position].name,
+                    courseList[position].description,
+                    courseList[position].image,
+                    courseList[position].price,
+                    courseList[position].duration,
+                    courseList[position].createdDate
+                )
+            } else {
+                Toast.makeText(context, "Subscription Expired", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         holder.btnSubscribe.setOnClickListener {

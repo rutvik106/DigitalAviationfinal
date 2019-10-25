@@ -82,6 +82,23 @@ class PaymentActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+
+                activityPaymentBinding.webPayment.loadUrl(
+                    "javascript:(function() { " +
+                            "var head = document.getElementsByTagName('header')[0];"
+                            + "head.parentNode.removeChild(head);" +
+                            "})()"
+                )
+
+
+
+                activityPaymentBinding.webPayment.loadUrl(
+                    "javascript:(function() { " +
+                            "var head = document.getElementsByTagName('footer')[0];"
+                            + "head.parentNode.removeChild(head);" +
+                            "})()"
+                )
+
                 progressDialog.dismiss()
             }
         }

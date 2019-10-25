@@ -2,6 +2,7 @@ package `in`.fusionbit.digitalaviation.adapters
 
 import `in`.fusionbit.digitalaviation.R
 import `in`.fusionbit.digitalaviation.model.SubscriptionsModel
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,9 +28,16 @@ class SubscriptionAdapter(private val list: ArrayList<SubscriptionsModel>) :
 
     override fun onBindViewHolder(holder: VHSubscription, position: Int) {
         holder.tvName.text = list[position].courseName
-        holder.tvDate.text = "Subscribe Date : " + list[position].date
-        holder.tvPrice.text = "Price : " + list[position].coursePrice
-        holder.tvExpireDate.text = "Subscription expire date : " + list[position].expiredDate
+        holder.tvDate.text = "Subscribed On : " + list[position].date
+        holder.tvPrice.text = "Price : " + list[position].coursePrice + " INR"
+        holder.tvExpireDate.text = "Subscription Expires On : " + list[position].expiredDate
+
+        if (list[position].expired == "1") {
+            holder.tvExpireDate.text = "Subscription Expired"
+            holder.tvExpireDate.setTextColor(Color.RED)
+
+        }
+
     }
 
     class VHSubscription(itemView: View) : RecyclerView.ViewHolder(itemView) {

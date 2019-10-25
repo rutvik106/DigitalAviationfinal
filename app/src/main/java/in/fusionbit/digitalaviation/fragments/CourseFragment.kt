@@ -96,7 +96,8 @@ class CourseFragment : Fragment(), CourseAdapter.CourseClick {
                                     obj.getString("pricing"),
                                     obj.getString("duration"),
                                     obj.getString("created_at"),
-                                    obj.getString("is_subscribed")
+                                    obj.getString("is_subscribed"),
+                                    obj.getString("expired")
                                 )
                                 courseList.add(courseModel)
                             }

@@ -16,12 +16,7 @@ class ContentActivity : AppCompatActivity() {
     private var url = ""
     private var id = ""
 
-    var newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0"
-
     private lateinit var progressDialog: ProgressDialog
-
-
-    var mbOrientationLandscape = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

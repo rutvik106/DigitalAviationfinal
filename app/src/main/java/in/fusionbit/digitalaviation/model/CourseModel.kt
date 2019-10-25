@@ -10,5 +10,6 @@ data class CourseModel(
     val price: String,
     val duration: String,
     val createdDate: String,
-    val isSubscribed: String = "0"
+    val isSubscribed: String = "0",
+    val expired: String = "0"
 )

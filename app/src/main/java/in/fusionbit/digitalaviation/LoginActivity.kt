@@ -77,6 +77,9 @@ class LoginActivity : AppCompatActivity() {
                                     errorObject.getString("error_msg"),
                                     Toast.LENGTH_SHORT
                                 ).show()
+
+
+
                             }
 
                         } else {
